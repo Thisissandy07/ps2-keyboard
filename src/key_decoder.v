@@ -60,7 +60,7 @@ function [7:0] decode_ascii;
     end
 endfunction
   always @(posedge clk) begin
-    if(reset ) begin
+    if(reset) begin
       release_pending <= 1'b0;
       key_ascii <= 8'd0;
       key_released <= 1'b0;

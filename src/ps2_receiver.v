@@ -8,7 +8,8 @@ module ps2_receiver (
   output reg scan_valid
 );
 
-reg ps2_clk_meta; //stabilizing flipflops (meta and sync) which ensure that the flipflop storing the previous clock's state has a stable signal to get input from, hence the order is ps2_clock -> meta -> sync -> prev
+reg ps2_clk_meta; //stabilizing flipflops (meta and sync) which ensures
+//that the flipflop storing the previous clock's state has a stable signal to get input from, hence the order is ps2_clock -> meta -> sync -> prev
 reg ps2_clk_sync;
 reg ps2_clk_prev;
 reg ps2_data_meta;
