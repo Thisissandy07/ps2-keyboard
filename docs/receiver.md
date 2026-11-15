@@ -36,13 +36,13 @@ PS/2 port has 2 wires used for communication:
 
 Data is communicated in an 11-bit packet
 
-When no data is being transmitted, ps2_data and ps2_clk are held high. When ps2c goes low for the start bit, the sampling of the packet begins.  
+When no data is being transmitted, ps2_data and ps2_clk are held high. When ps2_clk goes low for the start bit, the sampling of the packet begins.  
 
 Eight data bits, one parity bit and one stop bit are then sampled on the falling edge of ps2_clk.
 
 The receiver operates using a 4 state FSM.
 
-The four states for the receiver are IDLE, DATA, PARITY and STOP. In idle state, if a negative edge is detected for ps2_clk, the start bit of a packet has been sent, if the receiver is also enabled, we go to the rx state, if a negative edge for ps2c is detected, we sample ps2_data by right shifting in the bit to the register and then incrementing. When bit_count is equal to 7 we have sampled the 8 data, 1 parity and 1 stop bits and are done, so we assert a one clock cycle done tick and go back to the idle state.
+The four states for the receiver are IDLE, DATA, PARITY and STOP. In idle state, if a negative edge is detected for ps2_clk, the start bit of a packet has been sent, if the receiver is also enabled, we go to the rx state, if a negative edge for ps2_clk is detected, we sample ps2_data by right shifting in the bit to the register and then incrementing. When bit_count is equal to 7 we have sampled the 8 data, 1 parity and 1 stop bits and are done, so we assert a one clock cycle done tick and go back to the idle state.
 
 ### Explanation:
 By waiting for a negative edge on ps2_clk while in idle, the state machine is specifically hunting for our start bit. Once this is detected it confirms that a transmission has begun and transitions to the DATA state.
