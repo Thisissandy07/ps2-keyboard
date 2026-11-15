@@ -12,7 +12,7 @@ module key_decoder(
   reg shift_l;
   reg shift_r;
   reg caps_lock;
-  reg caps_down;
+ 
 
   wire shift_pressed = shift_l | shift_r;
 
@@ -73,7 +73,8 @@ endfunction
       key_ascii <= 8'd0;
       key_released <= 1'b0;
       key_valid <= 1'b0;
-      shift_pressed <= 1'b0;
+      shift_l <= 1'b0;
+      shift_r <= 1'b0;
       caps_lock <= 1'b0;
     end
     else begin
@@ -81,13 +82,16 @@ endfunction
       if(scan_valid) begin
         if(scan_code == 8'hF0) begin
           release_pending <= 1'b1;
-        end else if(scan_code == 8'h12 || scan_code == 8'h59) begin 
-          shift_pressed <= ~release_pending;
+        end else if (scan_code == 8'h12) begin        
+          shift_l <= ~release_pending;            
+          release_pending <= 1'b0;
+        end
+        else if (scan_code == 8'h59) begin        
+          shift_r <= ~release_pending;            
           release_pending <= 1'b0;
         end else if(scan_code == 8'h58) begin 
-          if(!release_pending) begin
+          if(!release_pending)
             caps_lock <= ~caps_lock;
-          end
           release_pending <= 1'b0;
         end else begin
       if (decode_ascii(scan_code, shift_pressed, caps_lock) != 8'd0) begin
