@@ -23,7 +23,7 @@ run: $(OUT)
 	$(SIM) $(OUT)
 
 test-all: $(ALL_VVPS)
-	@for vvp in $(ALL_VVPS); do \
+	@set -e; for vvp in $(ALL_VVPS); do \
 		echo "Running $$vvp"; \
 		$(SIM) $$vvp; \
 	done

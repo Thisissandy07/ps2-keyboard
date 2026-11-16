@@ -65,23 +65,20 @@ initial begin
   test_key(8'h29, " ");
   test_key(8'h5A, 8'h0D);
 
-  //test cases for shift 
-  send_byte(8'h12);         
-  test_key(8'h1C, "A");     
-  test_key(8'h16, "!");     
-  test_key(8'h45, ")");      
-  send_byte(8'hF0);          
   send_byte(8'h12);
-  
-//test cases for caps lock 
-  send_byte(8'h59);          
-  test_key(8'h1C, "a");      
-  test_key(8'h16, "!");      
-  send_byte(8'hF0);          
+  test_key(8'h1C, "A");
+  test_key(8'h16, "!");
+  test_key(8'h45, ")");
+  send_byte(8'hF0);
+  send_byte(8'h12);
+  send_byte(8'h59);
+  test_key(8'h1C, "A");
+  test_key(8'h16, "!");
+  send_byte(8'hF0);
   send_byte(8'h59);
 
   #40;
-  $display("PASS: all 7 key tests,all 3 test cases for shift and the 2 test cases for caps lock");
+  $display("PASS: all 12 press/release tests (7 unshifted, 3 Left Shift, 2 Right Shift)");
   $finish;
 end
 

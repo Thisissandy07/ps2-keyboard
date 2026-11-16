@@ -42,23 +42,54 @@ When a key is released, the keyboard sends F0 first and then the key's code. The
 
 ## How to run the tests
 
-Receiver and decoder:
+Run these commands from the project root (`ps2keyboard`).
 
-iverilog -o ps2_sim ps2_receiver_tb.v ps2_receiver.v shift_reg.v key_decoder.v
-vvp ps2_sim
+Receiver and decoder (compile, then print simulation output):
+
+```sh
+make run
+```
+
+Open the generated waveform:
+
+```sh
 gtkwave ps2_receiver.vcd
+```
+
+In GTKWave, select `ps2_receiver_tb` in the hierarchy, select signals and
+click **Append**, then use **Zoom Fit** to see the full simulation.
+Useful signals: `clk`, `reset`, `ps2_clk`, `ps2_data`, `scan_code`,
+`scan_valid`, `key_ascii`, `key_released`, and `key_valid`.
+Set `key_ascii` to ASCII display to read characters.
+
+Equivalent commands without Make:
+
+```sh
+mkdir -p build
+iverilog -s ps2_receiver_tb -o build/ps2_receiver_tb.vvp testbench/ps2_receiver_tb.v src/ps2_receiver.v src/shift_reg.v src/key_decoder.v
+vvp build/ps2_receiver_tb.vvp
+gtkwave ps2_receiver.vcd
+```
 
 Shift register:
 
-iverilog -o shift_sim shift_reg_tb.v shift_reg.v
-vvp shift_sim
+```sh
+make run TB=shift_reg_tb
 gtkwave shift_reg.vcd
+```
 
 Clock:
 
-iverilog -o clock_sim clock_tb.v
-vvp clock_sim
+```sh
+make run TB=clock_tb
 gtkwave clock.vcd
+```
 
-If the receiver test passes, it prints a PASS message. If a key comes out wrong, it stops with an error.
+Compile without running: `make`. Run all testbenches: `make test-all`.
+Remove compiled files: `make clean`. VCD files are regenerated whenever
+simulations run and can be deleted when no longer needed.
 
+The receiver test checks 12 press/release cases: 7 unshifted, 3 with Left Shift,
+and 2 with Right Shift. It prints a final PASS message when all checks pass.
+Caps Lock is not currently tested. The clock and shift-register testbenches
+do not contain self-checking assertions.

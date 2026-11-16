@@ -12,7 +12,7 @@ module key_decoder(
   reg shift_l;
   reg shift_r;
   reg caps_lock;
- 
+
 
   wire shift_pressed = shift_l | shift_r;
 
@@ -61,7 +61,7 @@ function [7:0] decode_ascii;
             8'h46: decode_ascii = shift ? "(" : "9";
 
             8'h29: decode_ascii = " ";
-            8'h5A: decode_ascii = 8'h0D; // Enter: carriage return
+            8'h5A: decode_ascii = 8'h0D;
 
             default: decode_ascii = 8'd0;
         endcase
@@ -82,14 +82,14 @@ endfunction
       if(scan_valid) begin
         if(scan_code == 8'hF0) begin
           release_pending <= 1'b1;
-        end else if (scan_code == 8'h12) begin        
-          shift_l <= ~release_pending;            
+        end else if (scan_code == 8'h12) begin
+          shift_l <= ~release_pending;
           release_pending <= 1'b0;
         end
-        else if (scan_code == 8'h59) begin        
-          shift_r <= ~release_pending;            
+        else if (scan_code == 8'h59) begin
+          shift_r <= ~release_pending;
           release_pending <= 1'b0;
-        end else if(scan_code == 8'h58) begin 
+        end else if(scan_code == 8'h58) begin
           if(!release_pending)
             caps_lock <= ~caps_lock;
           release_pending <= 1'b0;
